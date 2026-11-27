@@ -5,6 +5,16 @@
 
 ---
 
+## 🌐 Live Deployments & Quick Links
+
+- **Production Website (Vercel)**: [https://monaco-fine-dining.vercel.app](https://monaco-fine-dining.vercel.app)
+- **GitHub Repository**: [https://github.com/MUHAMMADASIMSAQLAIN/monaco-restaurant](https://github.com/MUHAMMADASIMSAQLAIN/monaco-restaurant)
+- **Zapier Workflow ID**: `387980202` (*Monaco Restaurant — Online Reservations*)
+- **Connected Google Sheets Database**: `Monaco Restaurant Reservations` → Worksheet `Bookings`
+- **Connected Notification Channels**: Gmail (`asimsaqlain195@gmail.com`), Google Sheets, Google Calendar
+
+---
+
 ## 🌟 Executive Summary
 
 **Monaco Restaurant** is a full-stack premium restaurant web application designed to reflect the visual quality, layout, spacing, typography, and luxury dining experience of world-class establishments. It includes:
