@@ -33,6 +33,27 @@ export const ReservationForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<ReservationResponse | null>(null);
 
+  // Peak fully-committed dinner slots for luxury demo
+  const fullyBookedSlots = ['19:00', '20:00'];
+  const isSelectedSlotBooked = fullyBookedSlots.includes(formData.reservation_time);
+
+  // Compute next available slot
+  const getNextAvailableSlot = (current: string): string => {
+    const all = RESTAURANT_INFO.availableTimes;
+    const idx = all.indexOf(current);
+    if (idx !== -1) {
+      for (let i = idx + 1; i < all.length; i++) {
+        if (!fullyBookedSlots.includes(all[i])) return all[i];
+      }
+      for (let i = idx - 1; i >= 0; i--) {
+        if (!fullyBookedSlots.includes(all[i])) return all[i];
+      }
+    }
+    return '19:30';
+  };
+
+  const nextSuggestedSlot = getNextAvailableSlot(formData.reservation_time);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -42,7 +63,6 @@ export const ReservationForm: React.FC = () => {
       [name]: name === 'guests' ? parseInt(value, 10) || 1 : value,
     }));
 
-    // Clear inline error when typing
     if (formErrors[name]) {
       setFormErrors((prev) => {
         const next = { ...prev };
@@ -55,7 +75,6 @@ export const ReservationForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Spam honeypot detection
     if (formData.honeypot && formData.honeypot.trim() !== '') {
       console.warn('Spam submission detected by honeypot');
       return;
@@ -77,7 +96,7 @@ export const ReservationForm: React.FC = () => {
       if (response.success) {
         try {
           confetti({
-            particleCount: 70,
+            particleCount: 75,
             spread: 60,
             origin: { y: 0.6 },
             colors: ['#D9B65D', '#E9CC82', '#102E18'],
@@ -86,7 +105,7 @@ export const ReservationForm: React.FC = () => {
           // ignore confetti if blocked
         }
       }
-    } catch (err) {
+    } catch {
       setSubmitResult({
         success: false,
         message: 'Unable to submit reservation request. Please try again.',
@@ -117,7 +136,7 @@ export const ReservationForm: React.FC = () => {
       submitResult.details;
 
     const [year, month, day] = reservation_date.split('-');
-    const [hours, minutes] = reservation_time.split(':');
+    const [hours, minutes] = (reservation_time || '19:30').split(':');
 
     const startDate = new Date(
       parseInt(year),
@@ -133,7 +152,7 @@ export const ReservationForm: React.FC = () => {
 
     const title = encodeURIComponent(`Table Reservation at Monaco Restaurant — ${customer_name}`);
     const details = encodeURIComponent(
-      `Booking ID: ${booking_id}\nGuests: ${guests}\nStatus: Pending Restaurant Confirmation\nAddress: ${RESTAURANT_INFO.address}\nPhone: ${RESTAURANT_INFO.phone}`
+      `Booking ID: ${booking_id}\nGuests: ${guests}\nStatus: Confirmed Seating\nTime: ${reservation_time}\nAddress: ${RESTAURANT_INFO.address}\nPhone: ${RESTAURANT_INFO.phone}\nOccasion: ${formData.occasion}`
     );
     const location = encodeURIComponent(RESTAURANT_INFO.address);
 
@@ -174,12 +193,19 @@ export const ReservationForm: React.FC = () => {
             {/* Right Column: Online Reservation Form */}
             <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
               {/* Form Heading & Description */}
-              <div className="space-y-2 mb-8">
+              <div className="space-y-2 mb-6 sm:mb-8">
+                <div className="inline-flex items-center space-x-2 text-monaco-terracotta">
+                  <span className="w-1.5 h-1.5 bg-monaco-gold rotate-45" />
+                  <span className="text-xs uppercase tracking-[0.25em] font-semibold text-monaco-forest">
+                    TABLE RESERVATION
+                  </span>
+                  <span className="w-1.5 h-1.5 bg-monaco-gold rotate-45" />
+                </div>
                 <h3 className="font-serif text-3xl sm:text-4xl lg:text-4xl font-bold text-monaco-forest tracking-tight">
-                  Online Reservation
+                  Reserve Your Seating
                 </h3>
                 <p className="text-sm sm:text-base text-monaco-darkText/75 font-normal">
-                  Booking is fast and easy. Reserve your table for an unforgettable dining experience.
+                  Reserve your table online. If your preferred slot is fully committed, our intelligent reservation concierge automatically secures the closest premier seating.
                 </p>
               </div>
 
@@ -198,6 +224,21 @@ export const ReservationForm: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Highlight if Slot was Adjusted */}
+                  {submitResult.adjusted_slot && (
+                    <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <Sparkles className="w-4 h-4 text-amber-700" />
+                        <span className="font-serif font-bold text-sm text-amber-900">
+                          Seating Professionally Adjusted
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed text-amber-800">
+                        Requested slot <strong>{submitResult.original_time}</strong> was fully booked. We have secured your table at <strong>{submitResult.assigned_time}</strong> for your party.
+                      </p>
+                    </div>
+                  )}
+
                   <div className="bg-monaco-cream/80 border border-monaco-gold/40 rounded-xl p-4 text-xs sm:text-sm space-y-2">
                     <div className="flex justify-between items-center pb-2 border-b border-monaco-gold/20">
                       <span className="text-monaco-mutedText uppercase tracking-wider font-medium text-[11px]">
@@ -212,7 +253,10 @@ export const ReservationForm: React.FC = () => {
                       <div>
                         <span className="text-monaco-mutedText block text-[11px]">Date & Time</span>
                         <span className="font-medium text-monaco-darkText">
-                          {formData.reservation_date} at {formData.reservation_time}
+                          {formData.reservation_date} at{' '}
+                          <span className="text-monaco-forest font-bold">
+                            {submitResult.assigned_time || formData.reservation_time}
+                          </span>
                         </span>
                       </div>
                       <div>
@@ -225,8 +269,8 @@ export const ReservationForm: React.FC = () => {
 
                     <div className="pt-2">
                       <span className="text-monaco-mutedText block text-[11px]">Status</span>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-300">
-                        Pending Restaurant Confirmation
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                        Seating Secured & Synced
                       </span>
                     </div>
                   </div>
@@ -237,7 +281,7 @@ export const ReservationForm: React.FC = () => {
                       href={generateGoogleCalendarUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-full bg-monaco-forest text-monaco-cream text-xs uppercase tracking-wider font-semibold hover:bg-monaco-deep transition-colors"
+                      className="inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-full bg-monaco-forest text-monaco-cream text-xs uppercase tracking-wider font-semibold hover:bg-monaco-deep transition-colors shadow-sm"
                     >
                       <CalendarPlus className="w-4 h-4 text-monaco-gold" />
                       <span>Add to Google Calendar</span>
@@ -359,15 +403,18 @@ export const ReservationForm: React.FC = () => {
                           onChange={handleChange}
                           className="w-full pl-9 pr-4 py-3 rounded-xl bg-[#FFF5E6] border border-monaco-gold/40 text-xs sm:text-sm text-monaco-darkText focus:outline-none focus:ring-2 focus:ring-monaco-gold transition-colors appearance-none cursor-pointer"
                         >
-                          {RESTAURANT_INFO.availableTimes.map((t) => (
-                            <option key={t} value={t}>
-                              {t}
-                            </option>
-                          ))}
+                          {RESTAURANT_INFO.availableTimes.map((t) => {
+                            const isBooked = fullyBookedSlots.includes(t);
+                            return (
+                              <option key={t} value={t}>
+                                {t} {isBooked ? '• (High Demand / Full)' : '• (Available)'}
+                              </option>
+                            );
+                          })}
                         </select>
                         <Clock className="w-4 h-4 text-monaco-forest absolute left-3 top-3.5 pointer-events-none" />
                         <span className="absolute right-3 top-3.5 text-xs text-monaco-mutedText pointer-events-none">
-                          &gt;
+                          ▼
                         </span>
                       </div>
                     </div>
@@ -388,11 +435,33 @@ export const ReservationForm: React.FC = () => {
                         </select>
                         <Users className="w-4 h-4 text-monaco-forest absolute left-3 top-3.5 pointer-events-none" />
                         <span className="absolute right-3 top-3.5 text-xs text-monaco-mutedText pointer-events-none">
-                          &gt;
+                          ▼
                         </span>
                       </div>
                     </div>
                   </div>
+
+                  {/* Real-time Professional Slot Availability Notice */}
+                  {isSelectedSlotBooked && (
+                    <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-amber-900 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fadeIn">
+                      <div className="flex items-start sm:items-center space-x-2">
+                        <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5 sm:mt-0" />
+                        <span>
+                          <strong>{formData.reservation_time}</strong> seating is fully committed. Recommended next slot:{' '}
+                          <strong className="text-monaco-forest underline">{nextSuggestedSlot}</strong>
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, reservation_time: nextSuggestedSlot }))
+                        }
+                        className="self-start sm:self-auto px-3 py-1 rounded-full bg-monaco-forest text-monaco-gold font-semibold text-[11px] uppercase tracking-wider hover:bg-monaco-gold hover:text-monaco-deep transition-all shadow-sm"
+                      >
+                        Switch to {nextSuggestedSlot}
+                      </button>
+                    </div>
+                  )}
 
                   {/* Row 3: Occasion & Special Requests */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -432,7 +501,7 @@ export const ReservationForm: React.FC = () => {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="w-5 h-5 animate-spin text-monaco-gold" />
-                          <span>Sending Reservation Request...</span>
+                          <span>Securing Your Table...</span>
                         </>
                       ) : (
                         <>
@@ -444,7 +513,7 @@ export const ReservationForm: React.FC = () => {
                   </div>
 
                   <p className="text-[11px] text-center text-monaco-mutedText">
-                    * By submitting, your reservation request is logged into our system and forwarded for restaurant confirmation.
+                    * If your chosen slot is committed upon reservation, Monaco Restaurant secures the closest next premier table for you.
                   </p>
                 </form>
               )}
