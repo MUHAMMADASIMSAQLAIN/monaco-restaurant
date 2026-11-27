@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="20" fill="#0A2112"/>
+  <circle cx="50" cy="50" r="44" stroke="#D9B65D" stroke-width="2" fill="none" opacity="0.8"/>
+  <polygon points="50,16 53,24 50,32 47,24" fill="#D9B65D"/>
+  <text x="50" y="65" font-family="'Playfair Display', Georgia, serif" font-size="38" font-weight="700" fill="#D9B65D" text-anchor="middle">M</text>
+  <circle cx="34" cy="74" r="2" fill="#D9B65D"/>
+  <circle cx="50" cy="74" r="2.5" fill="#D9B65D"/>
+  <circle cx="66" cy="74" r="2" fill="#D9B65D"/>
+</svg>
