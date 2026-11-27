@@ -20,6 +20,8 @@ export const OurStory: React.FC = () => {
                 src={RESTAURANT_INFO.storyImage}
                 alt="Monaco Restaurant chefs preparing gourmet dishes"
                 className="w-full h-[400px] sm:h-[480px] object-cover object-center"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-monaco-deep/70 via-transparent to-transparent pointer-events-none" />
 

@@ -173,6 +173,8 @@ export const ReservationForm: React.FC = () => {
                 src={RESTAURANT_INFO.interiorImage}
                 alt="Monaco Restaurant luxury dining room interior"
                 className="w-full h-full object-cover object-center"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-monaco-deep/60 via-transparent to-transparent pointer-events-none" />
 

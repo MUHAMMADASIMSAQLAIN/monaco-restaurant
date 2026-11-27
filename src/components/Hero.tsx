@@ -98,6 +98,8 @@ export const Hero: React.FC = () => {
                   alt="Monaco Restaurant Gourmet Roasted Lamb Rack with Herbs"
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700 ease-out"
                   loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 {/* Soft gradient overlay for cinematic luxury depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-monaco-deep/40 via-transparent to-transparent pointer-events-none" />
