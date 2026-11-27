@@ -144,7 +144,7 @@ export const ReservationForm: React.FC = () => {
 
   return (
     <section id="reservations" className="bg-monaco-cream py-20 lg:py-28 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Main Rounded Container with Gold Border */}
         <div className="bg-[#FFFDF8] rounded-3xl lg:rounded-[2.5rem] border-2 border-monaco-gold shadow-luxury overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">

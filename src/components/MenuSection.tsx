@@ -18,7 +18,7 @@ export const MenuSection: React.FC = () => {
       id="menu"
       className="bg-monaco-ivory py-20 lg:py-28 text-monaco-darkText relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Section Header */}
         <div className="flex items-center space-x-4 mb-10 lg:mb-14">
           <h2 className="font-serif tracking-[0.2em] text-sm sm:text-base uppercase text-monaco-forest font-bold">
@@ -93,16 +93,18 @@ export const MenuSection: React.FC = () => {
                     className="bg-monaco-cardBg border border-monaco-gold/40 hover:border-monaco-gold rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-luxury group"
                   >
                     <div>
-                      {/* Food Image */}
-                      <div className="relative w-full aspect-square rounded-full max-w-[150px] mx-auto p-1 border border-monaco-gold/50 bg-monaco-ivory shadow-sm overflow-hidden mb-4">
-                        <img
-                          src={dish.image}
-                          alt={dish.name}
-                          className="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
+                      {/* Food Image with Floating Badge */}
+                      <div className="relative w-full aspect-square max-w-[150px] mx-auto mb-4">
+                        <div className="w-full h-full rounded-full p-1 border border-monaco-gold/50 bg-monaco-ivory shadow-sm overflow-hidden">
+                          <img
+                            src={dish.image}
+                            alt={dish.name}
+                            className="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        </div>
                         {dish.badge && (
-                          <span className="absolute top-1 right-1 bg-monaco-gold text-monaco-deep text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+                          <span className="absolute -top-1 -right-1 bg-monaco-gold text-monaco-deep text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-md z-10 border border-monaco-deep/10 whitespace-nowrap">
                             {dish.badge}
                           </span>
                         )}

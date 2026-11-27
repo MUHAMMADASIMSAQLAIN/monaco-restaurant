@@ -8,7 +8,7 @@ export const OurStory: React.FC = () => {
       {/* Subtle background ambient lights */}
       <div className="absolute top-1/2 -right-24 w-80 h-80 bg-monaco-gold/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Story Editorial Photograph */}
           <div className="lg:col-span-6 relative">

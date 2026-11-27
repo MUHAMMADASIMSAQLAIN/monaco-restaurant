@@ -5,7 +5,7 @@ import { RESTAURANT_INFO } from '../data/restaurant';
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-monaco-deep text-monaco-ivory border-t-2 border-monaco-gold/30 pt-16 pb-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Top Section matching Reference Image */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 pb-12 border-b border-monaco-gold/20">
           {/* Brand Logo on the left */}

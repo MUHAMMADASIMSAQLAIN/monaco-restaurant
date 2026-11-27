@@ -30,7 +30,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-md bg-monaco-ivory shadow-2xl border-l border-monaco-gold/40 flex flex-col">
           {/* Drawer Header */}
           <div className="p-6 bg-monaco-forest text-monaco-ivory border-b border-monaco-gold/30 flex items-center justify-between">

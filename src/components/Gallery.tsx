@@ -15,7 +15,7 @@ export const Gallery: React.FC = () => {
 
   return (
     <section id="gallery" className="bg-monaco-ivory py-20 lg:py-28 text-monaco-darkText relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-10 lg:mb-14">
           <div className="inline-flex items-center space-x-2 text-monaco-terracotta">
