@@ -16,7 +16,7 @@ export const MenuSection: React.FC = () => {
   return (
     <section
       id="menu"
-      className="bg-monaco-ivory py-20 lg:py-28 text-monaco-darkText relative overflow-hidden"
+      className="bg-monaco-ivory py-20 lg:py-28 text-monaco-darkText relative overflow-hidden scroll-mt-20 lg:scroll-mt-24"
     >
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] 3xl:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Section Header */}

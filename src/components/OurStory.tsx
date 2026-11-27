@@ -4,7 +4,7 @@ import { RESTAURANT_INFO } from '../data/restaurant';
 
 export const OurStory: React.FC = () => {
   return (
-    <section id="story" className="bg-monaco-forest py-20 lg:py-32 text-monaco-ivory relative overflow-hidden">
+    <section id="story" className="bg-monaco-forest py-20 lg:py-32 text-monaco-ivory relative overflow-hidden scroll-mt-20 lg:scroll-mt-24">
       {/* Subtle background ambient lights */}
       <div className="absolute top-1/2 -right-24 w-80 h-80 bg-monaco-gold/10 rounded-full blur-3xl pointer-events-none" />
 

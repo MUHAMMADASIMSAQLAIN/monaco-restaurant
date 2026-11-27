@@ -19,6 +19,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
     totalItems,
   } = useCart();
 
+  const handleNavigate = (targetId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    onClose();
+    setTimeout(() => {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      window.history.pushState(null, '', `#${targetId}`);
+    }, 120);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -68,12 +80,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
                     Explore our chef's signature pasta, dry-aged steaks, and artisanal dishes to begin your culinary journey.
                   </p>
                 </div>
-                <button
-                  onClick={onClose}
-                  className="px-6 py-2.5 rounded-full bg-monaco-forest text-monaco-cream text-xs uppercase tracking-wider font-semibold hover:bg-monaco-gold hover:text-monaco-deep transition-all shadow-sm"
+                <a
+                  href="#menu"
+                  onClick={handleNavigate('menu')}
+                  className="px-6 py-2.5 rounded-full bg-monaco-forest text-monaco-cream text-xs uppercase tracking-wider font-semibold hover:bg-monaco-gold hover:text-monaco-deep transition-all shadow-sm inline-flex items-center space-x-2 cursor-pointer"
                 >
-                  Browse Menu
-                </button>
+                  <span>Browse Menu</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </div>
             ) : (
               <div className="space-y-3">
@@ -174,8 +188,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
 
               <a
                 href="#reservations"
-                onClick={onClose}
-                className="w-full py-3.5 px-4 rounded-full bg-monaco-forest hover:bg-monaco-deep text-monaco-ivory font-serif font-semibold text-sm tracking-wider uppercase flex items-center justify-center space-x-2 transition-all shadow-md group"
+                onClick={handleNavigate('reservations')}
+                className="w-full py-3.5 px-4 rounded-full bg-monaco-forest hover:bg-monaco-deep text-monaco-ivory font-serif font-semibold text-sm tracking-wider uppercase flex items-center justify-center space-x-2 transition-all shadow-md group cursor-pointer"
               >
                 <span>Proceed to Reservation</span>
                 <ArrowRight className="w-4 h-4 text-monaco-gold transition-transform group-hover:translate-x-1" />
